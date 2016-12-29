@@ -1,0 +1,15 @@
+boardServiceClass: org.openhapi.smarthome2016.server.board.ServiceMockImpl
+
+database:
+  driverClass: org.h2.Driver
+  user: sa
+  password: sa
+  url: jdbc:h2:./target/test-smarthome
+
+server:
+  applicationConnectors:
+    - type: http
+      port: 0
+  adminConnectors:
+    - type: http
+      port: 0

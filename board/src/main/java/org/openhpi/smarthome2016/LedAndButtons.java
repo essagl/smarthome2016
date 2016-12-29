@@ -36,29 +36,23 @@ public class LedAndButtons {
         final GpioPinDigitalInput button2 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
 
         // create and register gpio pin listener
-        button1.addListener(new GpioPinListenerDigital() {
-            @Override
-            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
-                // when button is pressed, speed up the blink rate on green led
-                if(event.getState().isHigh()){
-                    ledGREEN.blink(200);
-                }
-                else{
-                    ledGREEN.blink(1000);
-                }
+        button1.addListener((GpioPinListenerDigital) event -> {
+            // when button is pressed, speed up the blink rate on green led
+            if(event.getState().isHigh()){
+                ledGREEN.blink(200);
+            }
+            else{
+                ledGREEN.blink(1000);
             }
         });
-        button2.addListener(new GpioPinListenerDigital() {
-            @Override
-            public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
-                // when button is pressed, speed up the blink rate on green led
-                if(event.getState().isHigh()){
-                    // continuously blink the led every 1/2 second for 15 seconds
-                    ledRED.blink(500, 15000);
-                }
-                else{
-                    ledRED.blink(1000,15000);
-                }
+        button2.addListener((GpioPinListenerDigital) event -> {
+            // when button is pressed, speed up the blink rate on green led
+            if(event.getState().isHigh()){
+                // continuously blink the led every 1/2 second for 15 seconds
+                ledRED.blink(500, 15000);
+            }
+            else{
+                ledRED.blink(1000,15000);
             }
         });
         // continuously blink the led every 1/2 second for 15 seconds
