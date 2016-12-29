@@ -6,8 +6,8 @@ package org.openhpi.smarthome2016;
  * PROJECT       :  Pi4J :: Java Examples
  * FILENAME      :  LcdExample.java
  *
- * This file is part of the Pi4J project. More information about
- * this project can be found here:  http://www.pi4j.com/
+ * This file is based on the one which is part of the Pi4J project.
+ * More information about Pi4J project can be found here:  http://www.pi4j.com/
  * **********************************************************************
  * %%
  * Copyright (C) 2012 - 2016 Pi4J

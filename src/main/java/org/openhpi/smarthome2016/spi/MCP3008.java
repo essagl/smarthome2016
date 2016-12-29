@@ -10,7 +10,10 @@ import java.math.RoundingMode;
 
 /**
  * Created by pi on 25.12.16.
- * static conversions used with lm335Z temperature sensor,  and MCP3008 ADC Module
+ * Static access methods used with lm335Z temperature sensor, HMZ-333A1 Humidity module and MCP3008 ADC Module.<br>
+ * Additionally the reference voltage multiplicand can be set to support some kind of calibration.
+ * @see org.openhpi.smarthome2016.DisplayTemperature
+ *
  */
 public class MCP3008 {
     private static SpiDevice mcp3008;

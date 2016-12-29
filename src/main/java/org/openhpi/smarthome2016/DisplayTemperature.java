@@ -14,6 +14,11 @@ import java.util.Date;
 import static java.lang.Thread.sleep;
 import static org.openhpi.smarthome2016.lcd.GE_C1602B.*;
 
+/**
+ * Example to display the indoor and outdoor temperature.<br>
+ *  Press both buttons to exit the program and switch off the LCD background light.
+ *  Press button2 to decrease reference voltage - button1 to increase reference voltage. (calibration)
+ */
 public class DisplayTemperature {
 
 

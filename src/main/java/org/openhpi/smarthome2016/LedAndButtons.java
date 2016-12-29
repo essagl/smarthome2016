@@ -7,6 +7,7 @@ import com.pi4j.wiringpi.GpioUtil;
 
 /**
  * Created by pi on 25.11.16.
+ * Test a red and green LED interaction with button1 and button2.
  */
 public class LedAndButtons {
     public static void main(String[] args) throws InterruptedException {

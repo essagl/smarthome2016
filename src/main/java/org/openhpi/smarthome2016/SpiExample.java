@@ -2,6 +2,7 @@ package org.openhpi.smarthome2016;
 
 /**
  * Created by pi on 24.12.16.
+ * Display temperature and humidity values by calling static methods from MCP3008 class.
  */
 
 import com.pi4j.util.Console;

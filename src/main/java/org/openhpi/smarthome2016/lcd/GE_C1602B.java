@@ -78,6 +78,10 @@ public class GE_C1602B {
     }
 }
 
+/**
+ * LCD implementation for GE_C1602B display type with 2 rows, 16 columns and back light.
+ * (Gleichmann GE-C1602B-TMI-JT/R)
+ */
 class LCD_GE_C1602B extends LCDBase implements LCD {
 
     private int rows = 2;
