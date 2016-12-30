@@ -37,6 +37,11 @@ import org.openhpi.smarthome2016.lcd.GE_C1602B;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * <p>Test that the LCD of type GE_C1602B installed on the embedded
+ * smarthome board used with the openHPI course 2016 works as desired.</p>
+ * Pressing the buttons shows the detected action. Pressing both buttons shows the date. *
+ */
 public class LcdExample {
 
   //  public final static int LCD_ROWS = 2;

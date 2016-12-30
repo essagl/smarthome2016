@@ -9,7 +9,9 @@ import com.pi4j.wiringpi.Lcd;
 
 /**
  * Created by pi on 27.12.16.
- * LCD Wrapper class to allow static method access
+ * Controlling GE_C1602B display type with 2 rows, 16 columns and back light
+ * (Gleichmann GE-C1602B-TMI-JT/R)
+ * installed on the embedded smarthome board used with the openHPI course 2016.
  */
 public class GE_C1602B {
 
@@ -19,59 +21,121 @@ public class GE_C1602B {
         instance = new LCD_GE_C1602B();
     }
 
+    /**
+     * @return 2
+     */
     public static int getRowCount() {
         return instance.getRowCount();
     }
 
+    /**
+     * @return 16
+     */
     public static int getColumnCount() {
         return instance.getColumnCount();
     }
 
+    /**
+     * clears the display
+     */
     public static void clear() {
         instance.clear();
     }
 
+    /**
+     * <p>
+     * Set the cursor to the home position.
+     * </p>
+     *
+     * @see <a href="http://wiringpi.com/dev-lib/lcd-library/">http://wiringpi.com/dev-lib/lcd-library/</a>
+     */
     public static void setCursorHome() {
         instance.setCursorHome();
     }
 
+    /**
+     * the the cursor at a given position
+     * @param row
+     * @param column
+     */
     public static void setCursorPosition(int row, int column) {
         instance.setCursorPosition(row,column);
     }
 
+    /**
+     * <p>Write a single character of data to the LCD display. </p>
+     * <p>(ATTENTION: the 'data' argument can only be a maximum of 512 characters.)</p>
+     * @see <a href="http://wiringpi.com/dev-lib/lcd-library/">http://wiringpi.com/dev-lib/lcd-library/</a>
+     * @param data
+     */
     public static void write(byte data) {
         instance.write(data);
     }
 
+    /**
+     * <p>Write string of data to the LCD display.</p>
+     * @see <a href="http://wiringpi.com/dev-lib/lcd-library/">http://wiringpi.com/dev-lib/lcd-library/</a>
+     * @param data
+     */
     public static void write(String data) {
         instance.write(data);
     }
 
+    /**
+     * <p>Write string of data to the LCD display row.</p>
+     * @param row
+     * @param data
+     */
     public static void write(int row, String data) {
         instance.write(row, data);
     }
 
+    /**
+     * <p>Write string of data to the LCD display column at row.</p>
+     * @param row
+     * @param data
+     */
     public static void write(int row, int column, String data) {
         instance.write(row, column, data);
     }
 
+    /**
+     * <p>Write string of data to the LCD display row at the given alignment position.
+     * Filling the complete row.</p>
+     * @param row
+     * @param data
+     */
     public static void writeln(int row, String data, LCDTextAlignment alignment) {
         instance.writeln(row, data, alignment);
     }
 
-
+    /**
+     * <p>Write string of data to the LCD display row at the given alignment position.</p>
+     * @param row
+     * @param data
+     */
     public static void write(int row, String data, LCDTextAlignment alignment) {
         instance.writeln(row, data, alignment);
     }
-
+    /**
+     * <p>Write string of data to the LCD display row at left alignment position.</p>
+     * @param row
+     * @param data
+     */
     public static void writeln(int row, String data) {
         instance.writeln(row, data);
     }
 
+    /**
+     * switch backlight on
+     */
     public static void setBacklightOn(){
         instance.setBacklightOn();
     }
 
+    /**
+     * switch backlight off
+     */
     public static void setBacklightOff(){
         instance.setBacklightOff();
 
@@ -80,7 +144,7 @@ public class GE_C1602B {
 
 /**
  * LCD implementation for GE_C1602B display type with 2 rows, 16 columns and back light.
- * (Gleichmann GE-C1602B-TMI-JT/R)
+ *
  */
 class LCD_GE_C1602B extends LCDBase implements LCD {
 

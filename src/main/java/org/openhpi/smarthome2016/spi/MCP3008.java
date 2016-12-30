@@ -4,13 +4,15 @@ import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
 
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Properties;
 
 /**
  * Created by pi on 25.12.16.
- * Static access methods used with lm335Z temperature sensor, HMZ-333A1 Humidity module and MCP3008 ADC Module.<br>
+ * Data access methods for Lm335Z temperature sensor, HMZ-333A1 Humidity module and MCP3008 ADC Module
+ * installed on the embedded smarthome board used with the openHPI course 2016.<br>
  * Additionally the reference voltage multiplicand can be set to support some kind of calibration.
  * @see org.openhpi.smarthome2016.DisplayTemperature
  *
@@ -26,6 +28,7 @@ public class MCP3008 {
             mcp3008 = SpiFactory.getInstance(SpiChannel.CS0,
                     SpiDevice.DEFAULT_SPI_SPEED/2, // default spi speed 1 MHz : raspberryPi speed = 500kHz
                     SpiDevice.DEFAULT_SPI_MODE); // default spi mode 0
+            vRef = loadReferenceVoltage();
         } catch (IOException e) {
             mcp3008  = null;
             e.printStackTrace();
@@ -105,6 +108,8 @@ public class MCP3008 {
             throw new IllegalArgumentException("reference voltage must be between 1 and 3.3 volts");
         }
         vRef = referenceVoltage;
+        storeReferenceVoltage(referenceVoltage);
+
     }
 
     public static double getReferenceVoltage() {
@@ -145,6 +150,27 @@ public class MCP3008 {
         return bd.doubleValue();
     }
 
+    static double loadReferenceVoltage(){
+        Properties prop = new Properties();
+        try {
+            prop.load(new FileInputStream("mcp3008.properties"));
+            if (prop.containsKey("vRef")){
+               return new Double(prop.getProperty("vRef")).doubleValue();
+            }
+        } catch (IOException e) {
+           // silently ignore exception and return default value;
+        }
+        return vRef;
+    }
 
-
+    static void storeReferenceVoltage(double vRef)  {
+        // make vRef persistent
+        Properties prop = new Properties();
+        prop.setProperty("vRef", String.valueOf(vRef));
+        try {
+             prop.store(new FileOutputStream("mcp3008.properties"), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
