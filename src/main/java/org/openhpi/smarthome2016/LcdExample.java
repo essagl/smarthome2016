@@ -44,12 +44,19 @@ import java.util.Date;
  */
 public class LcdExample {
 
+    private LcdExample(){}
+
   //  public final static int LCD_ROWS = 2;
     public final static int LCD_ROW_1 = 0;
     public final static int LCD_ROW_2 = 1;
   //  public final static int LCD_COLUMNS = 16;
 
 
+    /**
+     * Show LCD capabilities. No parameters required.
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String args[]) throws InterruptedException {
 
         System.out.println("<--Pi4J--> GPIO 4 bit LCD example program");

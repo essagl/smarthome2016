@@ -10,6 +10,8 @@ import com.pi4j.wiringpi.GpioUtil;
  */
 public class NonPrivilegedGpioExample {
 
+    public NonPrivilegedGpioExample(){};
+
     /**
      * This example code demonstrates how to use Pi4J with
      * non-privileged access (non-root/sudo) to GPIO pins on
@@ -17,8 +19,6 @@ public class NonPrivilegedGpioExample {
      *
      * @author Robert Savage
      */
-
-
         public static void main(String[] args) throws InterruptedException {
 
             System.out.println("<--Pi4J--> Non-Privileged GPIO Example ... started.");

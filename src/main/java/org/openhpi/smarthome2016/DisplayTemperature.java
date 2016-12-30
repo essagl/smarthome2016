@@ -21,12 +21,19 @@ import static org.openhpi.smarthome2016.lcd.GE_C1602B.*;
  */
 public class DisplayTemperature {
 
+    private DisplayTemperature(){}
 
     public final static int LCD_ROW_1 = 0;
     public final static int LCD_ROW_2 = 1;
 
     private static boolean displaying = true;
 
+    /**
+     * No arguments are needed to run this program.
+     * @param args
+     * @throws InterruptedException
+     * @throws IOException
+     */
     public static void main(String args[]) throws InterruptedException, IOException {
 
         System.out.println("<-- Openhpi Smarthome --> GPIO 4 bit LCD example program");

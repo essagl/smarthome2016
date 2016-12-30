@@ -10,6 +10,15 @@ import com.pi4j.wiringpi.GpioUtil;
  * Test a red and green LED interaction with button1 and button2.
  */
 public class LedAndButtons {
+    private LedAndButtons(){}
+
+    /**
+     * Start without parameters to make the LED's blink. The red led blinks for 15 sec,  the green LED does not stop
+     * blinking. Pressing the button1, change LED blinking of the green LED, pressing button2 restarts blinking the
+     * red LED.
+     * @param args
+     * @throws InterruptedException
+     */
     public static void main(String[] args) throws InterruptedException {
 
         System.out.println("<--Pi4J--> GPIO Blink Example ... started.");

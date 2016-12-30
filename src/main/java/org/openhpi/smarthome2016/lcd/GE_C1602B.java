@@ -15,6 +15,8 @@ import com.pi4j.wiringpi.Lcd;
  */
 public class GE_C1602B {
 
+    private GE_C1602B(){}
+
     private static LCD_GE_C1602B instance;
 
     static{

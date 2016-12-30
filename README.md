@@ -8,4 +8,8 @@ You need the Board used during the course connected to an Raspberry PI, like sho
 Easiest way to get all running is to check out the sources, build and run directly on the Raspberry PI.
 Java 8 is needed to build all sources.
 
+Assumed <a href="https://maven.apache.org/">maven</a> is installed call "mvn site" in the root directory of the project
+to generate the documentation.
+
 Download <a href="https://open.hpi.de/files/61a191f3-7eaa-409b-8d35-f71cb493fc6c">circuit diagram</a>
+Buy <a href="https://supr.com/embedded-smart-home/">the board</a>

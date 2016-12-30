@@ -18,6 +18,9 @@ import java.util.Properties;
  *
  */
 public class MCP3008 {
+
+    private MCP3008(){}
+
     private static SpiDevice mcp3008;
 
     // reference voltage defaults to 3.3V

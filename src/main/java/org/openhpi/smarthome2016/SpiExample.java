@@ -1,8 +1,7 @@
 package org.openhpi.smarthome2016;
 
 /**
- * Created by pi on 24.12.16.
- * Display temperature and humidity values by calling static methods from MCP3008 class.
+ * Display temperature and humidity values on the console.
  */
 
 import com.pi4j.util.Console;
@@ -17,6 +16,8 @@ import java.io.IOException;
  * @author Robert Savage
  */
 public class SpiExample {
+
+    private SpiExample(){}
 
     // SPI device
     //public static SpiDevice spi = null;
