@@ -2,6 +2,7 @@
 A java port for the OpenHPI 2016 embedded Smarthome course.
 The course took place from Monday, 06. June 2016, 08:00 (UTC) until Sunday, 10. Juli 2016, 12:00 (UTC) as an openHPI MOOC. 
 You can recap the course in self-study at https://open.hpi.de/courses/smarthome2016.
+The python sources for this cource can be found at https://github.com/openHPI/Embedded-Smart-Home-2016
 
 The programming examples in the course are all based on python. This project shows how to access the hardware using Java.
 You need the Board used during the course connected to an Raspberry PI, like shown in the course videos.
