@@ -35,7 +35,7 @@ public class ServiceMockImpl implements ServiceInterface{
     }
 
     @Override
-    public GpioPinDigitalInput getButton3() {
+    public GpioPinDigitalInput getSwitch1() {
         return null;
     }
 
