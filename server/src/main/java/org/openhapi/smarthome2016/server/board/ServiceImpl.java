@@ -38,8 +38,8 @@ public class ServiceImpl implements ServiceInterface {
     }
 
     @Override
-    public GpioPinDigitalInput getButton3() {
-        return GPIO.getButton3();
+    public GpioPinDigitalInput getSwitch1() {
+        return GPIO.getSwitch1();
     }
 
     @Override

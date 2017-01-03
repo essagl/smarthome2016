@@ -29,7 +29,7 @@ public interface ServiceInterface {
     /**
     * Door sensor
     */
-    GpioPinDigitalInput getButton3();
+    GpioPinDigitalInput getSwitch1();
 
     /**
      * red LED
