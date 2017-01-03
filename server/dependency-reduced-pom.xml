@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <parent>
+    <artifactId>parent</artifactId>
+    <groupId>org.openhpi.smarthome2016</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.openhpi</groupId>
-  <artifactId>smarthome2016-server</artifactId>
+  <groupId>org.openhpi.smarthome2016</groupId>
+  <artifactId>server</artifactId>
   <name>Smarthome2016 Server Application</name>
   <version>1.0-SNAPSHOT</version>
   <description>A java port for the OpenHPI 2016 embedded Smarthome course.</description>
-  <url>https://open.hpi.de/courses/smarthome2016</url>
+  <url>https://open.hpi.de/courses/smarthome2016/site/${project.version}/${project.artifactId}/</url>
   <prerequisites>
     <maven>3.0.0</maven>
   </prerequisites>
@@ -251,13 +256,16 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <distributionManagement>
+    <site>
+      <id>smarthome</id>
+      <url>${project.url}</url>
+    </site>
+  </distributionManagement>
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.site.deploy.skip>true</maven.site.deploy.skip>
-    <maven.site.skip>true</maven.site.skip>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.deploy.skip>true</maven.deploy.skip>
     <maven.compiler.target>1.8</maven.compiler.target>
   </properties>
 </project>
