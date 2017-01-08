@@ -11,7 +11,7 @@
   <name>Smarthome2016 Server Application</name>
   <version>1.0-SNAPSHOT</version>
   <description>A java port for the OpenHPI 2016 embedded Smarthome course.</description>
-  <url>https://open.hpi.de/courses/smarthome2016/site/${project.version}/${project.artifactId}/</url>
+  <url>${smarthome2016.url}</url>
   <prerequisites>
     <maven>3.0.0</maven>
   </prerequisites>
@@ -259,11 +259,12 @@
   <distributionManagement>
     <site>
       <id>smarthome</id>
-      <url>${project.url}</url>
+      <url>${project.url}/${project.artifactId}</url>
     </site>
   </distributionManagement>
   <properties>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <dependency.locations.enabled>false</dependency.locations.enabled>
     <maven.compiler.source>1.8</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.target>1.8</maven.compiler.target>

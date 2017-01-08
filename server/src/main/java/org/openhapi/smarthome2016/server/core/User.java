@@ -1,37 +1,110 @@
 package org.openhapi.smarthome2016.server.core;
 
+import javax.persistence.*;
 import java.security.Principal;
 import java.util.Set;
 
 /**
  * Created by ulrich on 07.01.17.
  */
+@Entity
+@Table(name = "users")
+@NamedQueries(
+        {
+                @NamedQuery(
+                        name = "org.openhapi.smarthome2016.server.core.User.findAll",
+                        query = "SELECT u FROM User u"
+                ),
+
+                @NamedQuery(
+                        name = "org.openhapi.smarthome2016.server.core.User.findByName",
+                        query = "SELECT u FROM User u where name = :name"
+                )
+        }
+)
 public class User implements Principal {
-        private final String name;
 
-        private final Set<String> roles;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-        public User(String name) {
-            this.name = name;
-            this.roles = null;
-        }
+    @Column(name = "name", nullable = false)
+    private  String name;
 
-        public User(String name, Set<String> roles) {
-            this.name = name;
-            this.roles = roles;
-        }
+    @Column(name = "password")
+    private  String password;
 
-        public String getName() {
-            return name;
-        }
 
-        public int getId() {
-            return (int) (Math.random() * 100);
-        }
+    @Column(name = "roles")
+    private String roles;
 
-        public Set<String> getRoles() {
-            return roles;
-        }
+
+    public User() {
+    }
+
+    public User(String name) {
+        this.name = name;
+        this.roles = null;
+        this.password = null;
+    }
+
+    public User(String name, String password) {
+        this.name = name;
+        this.roles = null;
+        this.password = password;
+    }
+
+    public User(String name, String password, String roles) {
+        this.name = name;
+        this.roles = roles;
+        this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+
+
+    public long getId() {
+        return id;
+    }
+
+    public String getRoles() {
+        return roles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        User user = (User) o;
+
+        if (!getName().equals(user.getName())) return false;
+        return getPassword() != null ? getPassword().equals(user.getPassword()) : user.getPassword() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName().hashCode();
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", password='" + password + '\'' +
+                ", roles='" + roles + '\'' +
+                '}';
+    }
 }
 
 
