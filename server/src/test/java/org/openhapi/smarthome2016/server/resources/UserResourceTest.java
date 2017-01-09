@@ -55,7 +55,7 @@ public class UserResourceTest extends AbstractResourceTest {
 
     @Before
     public void setUp() {
-        user = new User("Name","secret", "USER");
+        user = new User("User","secret", "USER");
         admin = new User("Admin","secret", "USER,ADMIN");
     }
 
@@ -96,6 +96,43 @@ public class UserResourceTest extends AbstractResourceTest {
         verify(USER_DAO).findAll();
         assertThat(response).containsAll(people);
     }
+
+
+    @Test
+    public void getUserTest() throws Exception {
+        String authHeaderValue = getAuthorizationHeaderValue("admin","secret");
+        User hans = new User("hans","secret", "");
+        when(USER_DAO.findByName("admin")).thenReturn(Optional.of(admin));
+        when(USER_DAO.findByName("hans")).thenReturn(Optional.of(hans));
+
+        final User found = target("/user/hans")
+                .request()
+                .header(HttpHeaders.AUTHORIZATION, authHeaderValue)
+                .get(User.class);
+
+        assertThat(found).isEqualTo(hans);
+
+    }
+
+    /**
+     * test that an unauthorized user can not access the /user URL to search by username
+     * @throws Exception
+     */
+    @Test (expected=javax.ws.rs.ForbiddenException.class)
+    public void UnauthorizedGetUserTest() throws Exception {
+        String authHeaderValue = getAuthorizationHeaderValue("user","secret");
+        when(USER_DAO.findByName("user")).thenReturn(Optional.of(user));
+
+         target("/user/hans")
+                .request()
+                .header(HttpHeaders.AUTHORIZATION, authHeaderValue)
+                .get(User.class);
+
+
+
+    }
+
+
 
 
     /**

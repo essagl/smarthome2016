@@ -1,6 +1,7 @@
 package org.openhapi.smarthome2016.server;
 
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
@@ -18,9 +19,12 @@ import org.openhapi.smarthome2016.server.db.UserDAO;
 import org.openhapi.smarthome2016.server.resources.ProtectedResource;
 import org.openhapi.smarthome2016.server.resources.SmarthomeBoardResource;
 import org.openhapi.smarthome2016.server.resources.UserResource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
 
+    final static Logger logger = LoggerFactory.getLogger(SmarthomeApplication.class);
     private final HibernateBundle<SmarthomeConfiguration> hibernateBundle =
             new HibernateBundle<SmarthomeConfiguration>(User.class) {
                 @Override
@@ -49,7 +53,9 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
                         new EnvironmentVariableSubstitutor(false)
                 )
         );
+        bootstrap.addBundle(new AssetsBundle());
         bootstrap.addBundle(hibernateBundle);
+
     }
 
     @Override
@@ -74,6 +80,17 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
         final UserDAO dao = new UserDAO(hibernateBundle.getSessionFactory());
-        environment.jersey().register(new UserResource(dao));
+        UserResource userResource = new UserResource(dao);
+        environment.jersey().register(userResource);
+
+
+//        // check if an admin is in database ...
+//        Optional<User> admin = userResource.listUsers().stream().filter(user -> user.getRoles().contains("ADMIN")).findFirst();
+//        if (!admin.isPresent()){
+//           User admin_ =  dao.createOrUpdate(new User("admin","secret","ADMIN"));
+//           if (null != admin_){
+//               logger.info("Created an admin user: "+admin_);
+//           }
+//        }
     }
 }

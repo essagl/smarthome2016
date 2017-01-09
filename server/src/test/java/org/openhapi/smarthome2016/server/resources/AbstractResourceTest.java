@@ -6,8 +6,6 @@ import org.openhapi.smarthome2016.server.auth.ExampleAuthenticator;
 import org.openhapi.smarthome2016.server.auth.ExampleAuthorizer;
 import org.openhapi.smarthome2016.server.core.User;
 
-import javax.ws.rs.client.WebTarget;
-
 /**
  * Created by ulrich on 08.01.17.
  */
@@ -20,7 +18,7 @@ public class AbstractResourceTest {
                     .setRealm("SUPER SECRET STUFF")
                     .buildAuthFilter();
 
-    protected String getAuthorizationHeaderValue(String username, String password) {
+    public static String getAuthorizationHeaderValue(String username, String password) {
         String userPassword = username+":"+password;
         String encodedCredentials = BaseEncoding.base64().encode(userPassword.getBytes());
         return "Basic "+encodedCredentials;
