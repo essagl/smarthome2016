@@ -1,5 +1,7 @@
 package org.openhapi.smarthome2016.server;
 
+import io.dropwizard.testing.ConfigOverride;
+import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.*;
 import org.openhapi.smarthome2016.server.api.MessuredValues;
@@ -13,10 +15,17 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
+import java.io.File;
+import java.io.IOException;
+
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class SmarthomeBoardIntegrationTest {
+
+    private static final String TMP_FILE = createTempFile();
+    private static final String CONFIG_PATH = resourceFilePath("test-smarthome-board.yml");
+
 
     /**
      * configure application and start test server
@@ -24,11 +33,16 @@ public class SmarthomeBoardIntegrationTest {
     @ClassRule
     public static final DropwizardAppRule<SmarthomeConfiguration> RULE =
             new DropwizardAppRule<SmarthomeConfiguration>(SmarthomeApplication.class,
-                    resourceFilePath("test-smarthome-board.yml"));
+                    CONFIG_PATH,
+                    ConfigOverride.config("database.url", "jdbc:h2:" + TMP_FILE));
 
 
     private Client client;
 
+    @BeforeClass
+    public static void migrateDb() throws Exception {
+        RULE.getApplication().run("db", "migrate", CONFIG_PATH);
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -52,7 +66,7 @@ public class SmarthomeBoardIntegrationTest {
         assertThat(messuredValues.getHumidity()).isEqualTo(serviceMock.getHumidity());
     }
 
-    @Ignore
+
     @Test
     public void testUsersAccess() throws Exception {
         String authHeaderValue = AbstractResourceTest.getAuthorizationHeaderValue("admin","secret");
@@ -64,5 +78,14 @@ public class SmarthomeBoardIntegrationTest {
                 .readEntity(User.class);
         assertThat(storedUser.getId()).isNotNull();
         assertThat(hans).isEqualTo(storedUser);
+    }
+
+
+    private static String createTempFile() {
+        try {
+            return File.createTempFile("test-smarthome", null).getAbsolutePath();
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

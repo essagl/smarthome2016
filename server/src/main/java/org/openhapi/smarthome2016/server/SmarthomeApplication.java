@@ -9,6 +9,7 @@ import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -54,6 +55,12 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
                 )
         );
         bootstrap.addBundle(new AssetsBundle());
+        bootstrap.addBundle(new MigrationsBundle<SmarthomeConfiguration>() {
+            @Override
+            public DataSourceFactory getDataSourceFactory(SmarthomeConfiguration configuration) {
+                return configuration.getDataSourceFactory();
+            }
+        });
         bootstrap.addBundle(hibernateBundle);
 
     }
@@ -83,14 +90,5 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
         UserResource userResource = new UserResource(dao);
         environment.jersey().register(userResource);
 
-
-//        // check if an admin is in database ...
-//        Optional<User> admin = userResource.listUsers().stream().filter(user -> user.getRoles().contains("ADMIN")).findFirst();
-//        if (!admin.isPresent()){
-//           User admin_ =  dao.createOrUpdate(new User("admin","secret","ADMIN"));
-//           if (null != admin_){
-//               logger.info("Created an admin user: "+admin_);
-//           }
-//        }
     }
 }
