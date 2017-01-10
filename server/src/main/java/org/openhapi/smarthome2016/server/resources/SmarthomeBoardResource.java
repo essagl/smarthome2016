@@ -2,6 +2,7 @@ package org.openhapi.smarthome2016.server.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import org.openhapi.smarthome2016.server.api.MessuredValues;
+import org.openhapi.smarthome2016.server.api.Thermometer;
 import org.openhapi.smarthome2016.server.board.ServiceInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,21 @@ public class SmarthomeBoardResource {
                 service.getHumidity());
 
         return messuredValues;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/thermometer")
+    public String startThermometer() {
+        try {
+            Thermometer.displayTemperature();
+            return "Thermometer started";
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "Error while starting thermometer";
     }
 
 

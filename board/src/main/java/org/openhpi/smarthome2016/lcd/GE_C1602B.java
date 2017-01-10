@@ -142,6 +142,14 @@ public class GE_C1602B {
         instance.setBacklightOff();
 
     }
+
+    /**
+     * check light state
+     */
+    public static boolean isBacklightOn(){
+        return instance.isBacklightOn();
+    }
+
 }
 
 /**
@@ -250,6 +258,10 @@ class LCD_GE_C1602B extends LCDBase implements LCD {
 
     public void setBacklightOff(){
         ((GpioPinDigitalOutput) GpioFactory.getInstance().getProvisionedPin(RaspiPin.GPIO_05)).low();
+    }
+
+    public boolean isBacklightOn(){
+       return ((GpioPinDigitalOutput) GpioFactory.getInstance().getProvisionedPin(RaspiPin.GPIO_05)).getState().isHigh();
     }
 
 }
