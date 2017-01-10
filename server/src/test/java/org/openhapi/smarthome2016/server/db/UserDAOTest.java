@@ -34,6 +34,8 @@ public class UserDAOTest {
         assertThat(userDAO.findById(jeff.getId())).isEqualTo(Optional.of(jeff));
 
         assertThat(userDAO.findByName(jeff.getName())).isEqualTo(Optional.of(jeff));
+
+        assertThat(userDAO.findByNameAndPassword(jeff.getName(),jeff.getPassword())).isEqualTo(Optional.of(jeff));
     }
 
     @Test

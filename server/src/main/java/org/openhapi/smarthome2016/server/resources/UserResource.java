@@ -44,5 +44,12 @@ public class UserResource {
         return userDAO.findByName(userName).orElseThrow(() -> new NotFoundException("No such user."));
     }
 
+    @GET
+    @UnitOfWork
+    @RolesAllowed("USER")
+    @Path("user")
+    public User getUser(@QueryParam("name") String userName,@QueryParam("password") String password) {
+        return userDAO.findByNameAndPassword(userName,password).orElseThrow(() -> new NotFoundException("No such user."));
+    }
 
 }

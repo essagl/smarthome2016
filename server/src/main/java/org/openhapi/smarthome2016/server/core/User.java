@@ -2,7 +2,6 @@ package org.openhapi.smarthome2016.server.core;
 
 import javax.persistence.*;
 import java.security.Principal;
-import java.util.Set;
 
 /**
  * Created by ulrich on 07.01.17.
@@ -19,6 +18,10 @@ import java.util.Set;
                 @NamedQuery(
                         name = "org.openhapi.smarthome2016.server.core.User.findByName",
                         query = "SELECT u FROM User u where name = :name"
+                ),
+                @NamedQuery(
+                        name = "org.openhapi.smarthome2016.server.core.User.findByNameAndPassword",
+                        query = "SELECT u FROM User u where name = :name and password = :password"
                 )
         }
 )

@@ -1,7 +1,6 @@
 package org.openhapi.smarthome2016.server.resources;
 
 
-import com.google.common.io.BaseEncoding;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.testing.junit.ResourceTestRule;
@@ -16,8 +15,11 @@ import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.HttpHeaders;
 
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.failBecauseExceptionWasNotThrown;
+import static org.mockito.Mockito.when;
 
 public class ProtectedResourceTest extends AbstractResourceTest{
 
@@ -33,11 +35,12 @@ public class ProtectedResourceTest extends AbstractResourceTest{
 
     @Test
     public void testProtectedEndpoint() {
+        when(USER_DAO.findByNameAndPassword("user","secret")).thenReturn(Optional.of(user));
         String authHeaderValue = getAuthorizationHeaderValue("user","secret");
         String secret = target("/protected").request()
                 .header(HttpHeaders.AUTHORIZATION, authHeaderValue)
                 .get(String.class);
-        assertThat(secret).startsWith("Hey there, user. You know the secret!");
+        assertThat(secret).startsWith("Hey there, User. You know the secret!");
     }
 
 
@@ -58,9 +61,12 @@ public class ProtectedResourceTest extends AbstractResourceTest{
 
     @Test
     public void testProtectedEndpointBadCredentials401() {
+        when(USER_DAO.findByNameAndPassword("user","secret")).thenReturn(Optional.empty());
+        String authHeaderValue = getAuthorizationHeaderValue("user","secret");
+
         try {
             target("/protected").request()
-                .header(HttpHeaders.AUTHORIZATION, "Basic c25lYWt5LWJhc3RhcmQ6YXNkZg==")
+                .header(HttpHeaders.AUTHORIZATION, authHeaderValue)
                 .get(String.class);
             failBecauseExceptionWasNotThrown(NotAuthorizedException.class);
         } catch (NotAuthorizedException e) {
@@ -73,15 +79,17 @@ public class ProtectedResourceTest extends AbstractResourceTest{
 
     @Test
     public void testProtectedAdminEndpoint() {
+        when(USER_DAO.findByNameAndPassword("admin","secret")).thenReturn(Optional.of(admin));
         String authHeaderValue = getAuthorizationHeaderValue("admin","secret");
         String secret = target("/protected/admin").request()
                 .header(HttpHeaders.AUTHORIZATION, authHeaderValue)
                 .get(String.class);
-        assertThat(secret).startsWith("Hey there, admin. It looks like you are an admin.");
+        assertThat(secret).startsWith("Hey there, Admin. It looks like you are an admin.");
     }
 
     @Test
     public void testProtectedAdminEndpointPrincipalIsNotAuthorized403() {
+        when(USER_DAO.findByNameAndPassword("user","secret")).thenReturn(Optional.of(user));
         String authHeaderValue = getAuthorizationHeaderValue("user","secret");
         try {
             target("/protected/admin").request()

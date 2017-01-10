@@ -24,6 +24,15 @@ public class UserDAO extends AbstractDAO<User> {
         );
     }
 
+    public Optional<User> findByNameAndPassword(String name, String password) {
+        return Optional.ofNullable(
+                uniqueResult(
+                        namedQuery("org.openhapi.smarthome2016.server.core.User.findByNameAndPassword")
+                                .setParameter("name",name).setParameter("password",password)
+                )
+        );
+    }
+
     public User createOrUpdate(User user) {
         return persist(user);
     }

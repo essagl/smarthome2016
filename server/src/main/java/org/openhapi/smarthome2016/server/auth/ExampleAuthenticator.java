@@ -1,31 +1,31 @@
 package org.openhapi.smarthome2016.server.auth;
 
 
-import com.google.common.collect.ImmutableSet;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.hibernate.UnitOfWork;
+import org.hibernate.SessionFactory;
 import org.openhapi.smarthome2016.server.core.User;
+import org.openhapi.smarthome2016.server.db.UserDAO;
 
 import java.util.Optional;
-import java.util.Set;
 
 public class ExampleAuthenticator implements Authenticator<BasicCredentials, User> {
-    /**
-     * Valid users with mapping user -> roles
-     */
-    private static final Set<User> VALID_USERS = ImmutableSet.of(
-            new User("guest"),
-            new User("user","secret","USER"),
-            new User("admin","secret","USER,ADMIN")
-    );
+
+    private final UserDAO userDAO;
+
+    public ExampleAuthenticator(SessionFactory sessionFactory) {
+         userDAO = new UserDAO(sessionFactory);
+    }
+
+    public ExampleAuthenticator(UserDAO userDAO) {
+        this.userDAO = userDAO;
+    }
 
     @Override
+    @UnitOfWork
     public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
-        User user = new User(credentials.getUsername(),credentials.getPassword());
-        if (VALID_USERS.contains(user)) {
-            return Optional.of(VALID_USERS.stream().filter(u -> u.equals(user)).findFirst().get());
-        }
-        return Optional.empty();
+        return userDAO.findByNameAndPassword(credentials.getUsername(),credentials.getPassword());
     }
 }

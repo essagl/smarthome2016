@@ -9,10 +9,12 @@ import io.dropwizard.configuration.EnvironmentVariableSubstitutor;
 import io.dropwizard.configuration.SubstitutingSourceProvider;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.hibernate.HibernateBundle;
+import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
+import org.hibernate.SessionFactory;
 import org.openhapi.smarthome2016.server.auth.ExampleAuthenticator;
 import org.openhapi.smarthome2016.server.auth.ExampleAuthorizer;
 import org.openhapi.smarthome2016.server.core.User;
@@ -67,7 +69,7 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
 
     @Override
     public void run(SmarthomeConfiguration configuration, Environment environment) {
-
+        final UserDAO dao = new UserDAO(hibernateBundle.getSessionFactory());
         try {
             environment.jersey().register(new SmarthomeBoardResource(configuration.getBoardService()));
         } catch (ClassNotFoundException e) {
@@ -77,16 +79,21 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
         } catch (InstantiationException e) {
             e.printStackTrace();
         }
+
+        ExampleAuthenticator authenticator = new UnitOfWorkAwareProxyFactory(hibernateBundle)
+                .create(ExampleAuthenticator.class,  SessionFactory.class,
+                        hibernateBundle.getSessionFactory());
+
         environment.jersey().register(new ProtectedResource());
         environment.jersey().register(new AuthDynamicFeature(new BasicCredentialAuthFilter.Builder<User>()
-                .setAuthenticator(new ExampleAuthenticator())
+                .setAuthenticator(authenticator)
                 .setAuthorizer(new ExampleAuthorizer())
                 .setRealm("SUPER SECRET STUFF")
                 .buildAuthFilter()));
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
         environment.jersey().register(RolesAllowedDynamicFeature.class);
 
-        final UserDAO dao = new UserDAO(hibernateBundle.getSessionFactory());
+
         UserResource userResource = new UserResource(dao);
         environment.jersey().register(userResource);
 

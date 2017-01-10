@@ -7,8 +7,6 @@ import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +14,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.openhapi.smarthome2016.server.core.User;
-import org.openhapi.smarthome2016.server.db.UserDAO;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -29,14 +26,15 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link UserResource}.
  */
 @RunWith(MockitoJUnitRunner.class)
 public class UserResourceTest extends AbstractResourceTest {
-    private static final UserDAO USER_DAO = mock(UserDAO.class);
+
 
     @ClassRule
     public static final ResourceTestRule RULE = ResourceTestRule.builder()
@@ -50,25 +48,13 @@ public class UserResourceTest extends AbstractResourceTest {
 
     @Captor
     private ArgumentCaptor<User> userCaptor;
-    private User user;
-    private User admin;
 
-    @Before
-    public void setUp() {
-        user = new User("User","secret", "USER");
-        admin = new User("Admin","secret", "USER,ADMIN");
-    }
-
-    @After
-    public void tearDown() {
-        reset(USER_DAO);
-    }
 
     @Test
     public void createPersonTest() throws JsonProcessingException {
         String authHeaderValue = getAuthorizationHeaderValue("admin","secret");
 
-        when(USER_DAO.findByName(contains("Admin"))).thenReturn(Optional.of(admin));
+        when(USER_DAO.findByNameAndPassword("admin","secret")).thenReturn(Optional.of(admin));
         when(USER_DAO.createOrUpdate(any(User.class))).thenReturn(user);
         final Response response = target("/user")
                 .request(MediaType.APPLICATION_JSON_TYPE)
@@ -84,7 +70,7 @@ public class UserResourceTest extends AbstractResourceTest {
     public void listPeopleTest() throws Exception {
         String authHeaderValue = getAuthorizationHeaderValue("admin","secret");
         final ImmutableList<User> people = ImmutableList.of(user);
-        when(USER_DAO.findByName("admin")).thenReturn(Optional.of(admin));
+        when(USER_DAO.findByNameAndPassword("admin","secret")).thenReturn(Optional.of(admin));
         when(USER_DAO.findAll()).thenReturn(people);
 
         final List<User> response = target("/user/list")
@@ -102,7 +88,7 @@ public class UserResourceTest extends AbstractResourceTest {
     public void getUserTest() throws Exception {
         String authHeaderValue = getAuthorizationHeaderValue("admin","secret");
         User hans = new User("hans","secret", "");
-        when(USER_DAO.findByName("admin")).thenReturn(Optional.of(admin));
+        when(USER_DAO.findByNameAndPassword("admin","secret")).thenReturn(Optional.of(admin));
         when(USER_DAO.findByName("hans")).thenReturn(Optional.of(hans));
 
         final User found = target("/user/hans")
@@ -121,7 +107,7 @@ public class UserResourceTest extends AbstractResourceTest {
     @Test (expected=javax.ws.rs.ForbiddenException.class)
     public void UnauthorizedGetUserTest() throws Exception {
         String authHeaderValue = getAuthorizationHeaderValue("user","secret");
-        when(USER_DAO.findByName("user")).thenReturn(Optional.of(user));
+        when(USER_DAO.findByNameAndPassword("user","secret")).thenReturn(Optional.of(user));
 
          target("/user/hans")
                 .request()

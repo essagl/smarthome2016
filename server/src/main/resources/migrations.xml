@@ -21,7 +21,7 @@
             <column name="id" valueNumeric="1"/>
             <column name="name" value="admin"/>
             <column name="password" value="secret"/>
-            <column name="roles" value="UER,ADMIN"/>
+            <column name="roles" value="USER,ADMIN"/>
         </insert>
     </changeSet>
 </databaseChangeLog>
