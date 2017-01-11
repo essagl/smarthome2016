@@ -82,7 +82,7 @@ public class Thermometer {
 
 
         int toggleCounter = 0;
-        writeln(LCD_ROW_1, "Temperature C", LCDTextAlignment.ALIGN_CENTER);
+        writeln(LCD_ROW_1, "Temperature \u00b0C", LCDTextAlignment.ALIGN_CENTER);
 
         // update time
         while(run) {
