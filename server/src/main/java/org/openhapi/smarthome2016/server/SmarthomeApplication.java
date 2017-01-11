@@ -80,6 +80,7 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
             e.printStackTrace();
         }
 
+        //create a proxy that will be aware of the {@link UnitOfWork} annotation for the authenticator
         ExampleAuthenticator authenticator = new UnitOfWorkAwareProxyFactory(hibernateBundle)
                 .create(ExampleAuthenticator.class,  SessionFactory.class,
                         hibernateBundle.getSessionFactory());

@@ -53,5 +53,11 @@ public class SmarthomeBoardResource {
         return "Error while starting thermometer";
     }
 
-
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/thermometer/stop")
+    public String stopThermometer() {
+        Thermometer.stop();
+        return "Thermometer stopped";
+     }
 }
