@@ -25,11 +25,11 @@ public class GPIO {
         ledGREEN = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03);
 
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        button1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, PinPullResistance.PULL_DOWN);
+        button1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00,"button1" ,PinPullResistance.PULL_DOWN);
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        button2 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, PinPullResistance.PULL_DOWN);
+        button2 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, "button2",PinPullResistance.PULL_DOWN);
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        switch1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_26, PinPullResistance.PULL_DOWN);
+        switch1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_26, "switch1",PinPullResistance.PULL_DOWN);
 
 
     }

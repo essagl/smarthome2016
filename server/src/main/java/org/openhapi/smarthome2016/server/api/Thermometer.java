@@ -79,10 +79,10 @@ public class Thermometer {
         }, myButtons);
 
         clearDisplay();
-
+        setBacklightOn();
 
         int toggleCounter = 0;
-        writeln(LCD_ROW_1, "Temperature \u00b0C", LCDTextAlignment.ALIGN_CENTER);
+        writeln(LCD_ROW_1, "Temperature C", LCDTextAlignment.ALIGN_CENTER);
 
         // update time
         while(run) {
@@ -119,10 +119,12 @@ public class Thermometer {
 
         // stop all GPIO activity/threads by shutting down the GPIO controller
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
+        clearDisplay();
         setBacklightOff();
         gpio.removeAllListeners();
+        gpio.unprovisionPin(myButtons[0],myButtons[1]);
         gpio.shutdown();   //<--- implement this method call if you wish to terminate the Pi4J GPIO controller
-
+        thermometerThread = null;
     };
 
     private static void clearDisplay() {
@@ -139,18 +141,13 @@ public class Thermometer {
     public static void displayTemperature() throws InterruptedException, IOException {
         if (null == thermometerThread){
             thermometerThread = new Thread(thermometerTask);
-        }
-        if (!run){
             thermometerThread.start();
         }
     }
 
     public static void stop(){
-        if (run){
-            run = false;
-        }
-
-    }
+         run = false;
+     }
 
     private static void stopDisplaying(){
         displaying = false;
