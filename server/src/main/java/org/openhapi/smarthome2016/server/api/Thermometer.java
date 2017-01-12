@@ -5,6 +5,7 @@ import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 import com.pi4j.wiringpi.GpioUtil;
+import org.openhpi.smarthome2016.gpio.GPIO;
 import org.openhpi.smarthome2016.spi.MCP3008;
 
 import java.io.IOException;
@@ -25,27 +26,96 @@ public class Thermometer {
     public final static int LCD_ROW_2 = 1;
 
     private static boolean displaying = true;
-    private static boolean run = false;
+    private static boolean running = false;
 
     private static Thread thermometerThread;
 
     /**
-     * No arguments are needed to run this program.
+     * starts the thermometer thread
      * @throws InterruptedException
      * @throws IOException
      */
+    public static void displayTemperature() throws InterruptedException, IOException {
+        if (null == thermometerThread){
+            thermometerThread = new Thread(thermometerTask);
+            thermometerThread.start();
+        }
+    }
 
+    /**
+     * stops the thermometer thread and executes shutdown
+     */
+    public static void stop(){
+        running = false;
+    }
+
+
+    /**
+     * No arguments are needed
+     */
     private static Runnable thermometerTask = () -> {
-        run = true;
+        running = true;
         GpioUtil.enableNonPrivilegedAccess();
         // create gpio controller
         final GpioController gpio = GpioFactory.getInstance();
+        final GpioPinDigitalInput[] myButtons = setupPins(gpio);
+
+        int toggleCounter = 0;
+        writeln(LCD_ROW_1, "Temperature C", LCDTextAlignment.ALIGN_CENTER);
+
+        // update time
+        while(running) {
+            if (displaying) {
+               try {
+                    if (toggleCounter < 50) {
+                        writeln(LCD_ROW_2, String.format("Indoor: %1$.2f", MCP3008.getIndoorTemperature()), LCDTextAlignment.ALIGN_CENTER);
+                    } else {
+                        writeln(LCD_ROW_2, String.format("Outdoor: %1$.2f", MCP3008.getOutdoorTemperature()), LCDTextAlignment.ALIGN_CENTER);
+                    }
+                    sleep(250);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    running = false;
+                } catch (InterruptedException e) {
+                   e.printStackTrace();
+                   running = false;
+               }
+                toggleCounter ++;
+                if (toggleCounter > 100){
+                    toggleCounter = 0;
+                }
+                if(gpio.isHigh(myButtons)) {
+                    if (isBacklightOn()){
+                        setBacklightOff();
+                    } else {
+                        setBacklightOn();
+                    }
+
+                }
+            }
+
+        }
+        shutdown(gpio, myButtons);
 
 
+    };
+
+    private static void shutdown(GpioController gpio, GpioPinDigitalInput[] myButtons) {
+        // stop all GPIO activity/threads by shutting down the GPIO controller
+        // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
+        clearDisplay();
+        setBacklightOff();
+        gpio.removeAllListeners();
+        gpio.unprovisionPin(myButtons[0],myButtons[1]);
+        gpio.shutdown();   //<--- implement this method call if you wish to terminate the Pi4J GPIO controller
+        thermometerThread = null;
+    }
+
+    private static GpioPinDigitalInput[] setupPins(GpioController gpio) {
         // provision gpio pins as input pins with its internal pull up resistor enabled
         final GpioPinDigitalInput myButtons[] = {
-                gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, "B1", PinPullResistance.PULL_UP),
-                gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, "B2", PinPullResistance.PULL_UP),
+                GPIO.getButton1(),
+                GPIO.getButton2(),
         };
 
         // create and register gpio pin listener to change reference voltage for calibration
@@ -53,14 +123,14 @@ public class Thermometer {
             @Override
             public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event) {
                 stopDisplaying();
-                if (event.getPin().getName().equals("B1") && event.getState() == PinState.HIGH) {
+                if (event.getPin().getName().equals(GPIO.getButton1Name()) && event.getState() == PinState.HIGH) {
                     double vRef = MCP3008.getReferenceVoltage();
                     if (vRef < 3.3 ){
                         vRef = vRef + 0.01;
                         MCP3008.setReferenceVoltage(vRef);
                     }
                 }
-                if (event.getPin().getName().equals("B2") && event.getState() == PinState.HIGH) {
+                if (event.getPin().getName().equals(GPIO.getButton2Name()) && event.getState() == PinState.HIGH) {
                     double vRef = MCP3008.getReferenceVoltage();
                     if (vRef > 1.0 ){
                         vRef = vRef - 0.01;
@@ -80,52 +150,11 @@ public class Thermometer {
 
         clearDisplay();
         setBacklightOn();
+        return myButtons;
+    }
 
-        int toggleCounter = 0;
-        writeln(LCD_ROW_1, "Temperature C", LCDTextAlignment.ALIGN_CENTER);
 
-        // update time
-        while(run) {
-            if (displaying) {
-               try {
-                    if (toggleCounter < 50) {
-                        writeln(LCD_ROW_2, String.format("Indoor: %1$.2f", MCP3008.getIndoorTemperature()), LCDTextAlignment.ALIGN_CENTER);
-                    } else {
-                        writeln(LCD_ROW_2, String.format("Outdoor: %1$.2f", MCP3008.getOutdoorTemperature()), LCDTextAlignment.ALIGN_CENTER);
-                    }
-                    sleep(250);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    run = false;
-                } catch (InterruptedException e) {
-                   e.printStackTrace();
-                   run = false;
-               }
-                toggleCounter ++;
-                if (toggleCounter > 100){
-                    toggleCounter = 0;
-                }
-                if(gpio.isHigh(myButtons)) {
-                    if (isBacklightOn()){
-                        setBacklightOff();
-                    } else {
-                        setBacklightOn();
-                    }
 
-                }
-            }
-
-        }
-
-        // stop all GPIO activity/threads by shutting down the GPIO controller
-        // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
-        clearDisplay();
-        setBacklightOff();
-        gpio.removeAllListeners();
-        gpio.unprovisionPin(myButtons[0],myButtons[1]);
-        gpio.shutdown();   //<--- implement this method call if you wish to terminate the Pi4J GPIO controller
-        thermometerThread = null;
-    };
 
     private static void clearDisplay() {
         // clear LCD
@@ -134,20 +163,9 @@ public class Thermometer {
             sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-            run  = false;
+            running = false;
         }
     }
-
-    public static void displayTemperature() throws InterruptedException, IOException {
-        if (null == thermometerThread){
-            thermometerThread = new Thread(thermometerTask);
-            thermometerThread.start();
-        }
-    }
-
-    public static void stop(){
-         run = false;
-     }
 
     private static void stopDisplaying(){
         displaying = false;
