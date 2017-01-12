@@ -15,6 +15,9 @@ public class GPIO {
     final static GpioPinDigitalInput button2;
     final static GpioPinDigitalInput switch1;
 
+    private static final String BUTTON2_NAME = "button2";
+    private static final String BUTTON1_NAME = "button1";
+    private static final String SWITCH1_NAME = "switch1";
     static{
         GpioUtil.enableNonPrivilegedAccess();
         // create gpio controller
@@ -25,11 +28,12 @@ public class GPIO {
         ledGREEN = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03);
 
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        button1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00,"button1" ,PinPullResistance.PULL_DOWN);
+
+        button1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_00, BUTTON1_NAME,PinPullResistance.PULL_DOWN);
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        button2 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, "button2",PinPullResistance.PULL_DOWN);
+        button2 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_02, BUTTON2_NAME,PinPullResistance.PULL_DOWN);
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
-        switch1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_26, "switch1",PinPullResistance.PULL_DOWN);
+        switch1 = gpio.provisionDigitalInputPin(RaspiPin.GPIO_26, SWITCH1_NAME,PinPullResistance.PULL_DOWN);
 
 
     }
@@ -52,5 +56,17 @@ public class GPIO {
 
     public static GpioPinDigitalInput getSwitch1(){
         return switch1;
+    }
+
+    public static String getButton1Name() {
+        return BUTTON1_NAME;
+    }
+
+    public static String getButton2Name() {
+        return BUTTON2_NAME;
+    }
+
+    public static String getSwitch1Name() {
+        return SWITCH1_NAME;
     }
 }
