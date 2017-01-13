@@ -33,6 +33,11 @@ public class UserDAO extends AbstractDAO<User> {
         );
     }
 
+    /**
+     * Create or update a user. When creating a new user the id propertiy must be null.
+     * @param user
+     * @return the user or null.
+     */
     public User createOrUpdate(User user) {
         return persist(user);
     }

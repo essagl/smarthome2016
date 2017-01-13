@@ -1,5 +1,8 @@
 package org.openhapi.smarthome2016.server.core;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import java.security.Principal;
 
@@ -25,19 +28,23 @@ import java.security.Principal;
                 )
         }
 )
+@ApiModel
 public class User implements Principal {
 
     @Id
+    @ApiModelProperty(position = 1, value = "Unique id used to update the user properties")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(name = "name", nullable = false)
+    @ApiModelProperty(position = 2, required = true, value = "Username containing only lowercase letters or numbers")
     private  String name;
 
     @Column(name = "password")
+    @ApiModelProperty(position = 3, required = true, value = "The password")
     private  String password;
 
-
+    @ApiModelProperty(position = 3,  value = "Comma separated list of roles (USER,ADMIN)")
     @Column(name = "roles")
     private String roles;
 
