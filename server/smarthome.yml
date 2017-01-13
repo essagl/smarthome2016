@@ -77,4 +77,7 @@ logging:
       maxFileSize: 10MB
 
 
+# a comma separated string of the packages that contain your @Api annotated resources
+swagger:
+  resourcePackage: org.openhapi.smarthome2016.server.resources
 

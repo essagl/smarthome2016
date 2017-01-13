@@ -154,6 +154,13 @@
             <artifactId>board</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.smoketurner/dropwizard-swagger -->
+        <dependency>
+            <groupId>com.smoketurner</groupId>
+            <artifactId>dropwizard-swagger</artifactId>
+            <version>1.0.5-4</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -289,6 +296,7 @@
                     </execution>
                 </executions>
             </plugin>
+
         </plugins>
     </build>
 

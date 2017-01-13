@@ -1,11 +1,10 @@
 package org.openhapi.smarthome2016.server;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.common.collect.ImmutableMap;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.openhapi.smarthome2016.server.board.ServiceImpl;
 import org.openhapi.smarthome2016.server.board.ServiceInterface;
 
 import javax.validation.Valid;
@@ -47,6 +46,17 @@ public class SmarthomeConfiguration extends Configuration {
     public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
         this.database = dataSourceFactory;
     }
+
+
+    @Valid
+    @NotNull
+    private final SwaggerBundleConfiguration swagger = new SwaggerBundleConfiguration();
+
+    @JsonProperty("swagger")
+    public SwaggerBundleConfiguration getSwagger() {
+        return swagger;
+    }
+
 //
 //    @JsonProperty("viewRendererConfiguration")
 //    public Map<String, Map<String, String>> getViewRendererConfiguration() {

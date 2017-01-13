@@ -1,6 +1,10 @@
 package org.openhapi.smarthome2016.server.resources;
 
 import com.codahale.metrics.annotation.Timed;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.openhapi.smarthome2016.server.api.MessuredValues;
 import org.openhapi.smarthome2016.server.api.Thermometer;
 import org.openhapi.smarthome2016.server.board.ServiceInterface;
@@ -14,6 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
+@Api("/")
 @Path("/board")
 @Produces(MediaType.APPLICATION_JSON)
 public class SmarthomeBoardResource {
@@ -29,6 +34,9 @@ public class SmarthomeBoardResource {
 
     @GET
     @Timed(name = "get-requests")
+    @ApiOperation(value = "MessuredValues", notes = "Returns indoor,outdoor temperature in " +
+            "degree celcius and humidity in percent.")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "MessuredValues") })
     public MessuredValues receiveAllData() throws IOException {
         MessuredValues messuredValues = new MessuredValues(counter.incrementAndGet(),
                 service.getIndoorTemp(),
@@ -41,6 +49,8 @@ public class SmarthomeBoardResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/thermometer")
+    @ApiOperation(value = "Thermometer", notes = "starting thermometer program")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "-Thermometer started- or -Error while starting thermometer-") })
     public String startThermometer() {
         try {
             Thermometer.displayTemperature();
@@ -55,6 +65,8 @@ public class SmarthomeBoardResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
+    @ApiOperation(value = "Thermometer", notes = "stopping thermometer program")
+    @ApiResponses(value = { @ApiResponse(code = 200, message = "Thermometer stopped") })
     @Path("/thermometer/stop")
     public String stopThermometer() {
         Thermometer.stop();

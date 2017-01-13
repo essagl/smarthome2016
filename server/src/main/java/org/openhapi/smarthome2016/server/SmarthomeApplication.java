@@ -13,6 +13,8 @@ import io.dropwizard.hibernate.UnitOfWorkAwareProxyFactory;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.federecio.dropwizard.swagger.SwaggerBundle;
+import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.hibernate.SessionFactory;
 import org.openhapi.smarthome2016.server.auth.ExampleAuthenticator;
@@ -64,7 +66,12 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
             }
         });
         bootstrap.addBundle(hibernateBundle);
-
+        bootstrap.addBundle(new SwaggerBundle<SmarthomeConfiguration>() {
+            @Override
+            protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(SmarthomeConfiguration configuration) {
+                return configuration.getSwagger();
+            }
+        });
     }
 
     @Override
