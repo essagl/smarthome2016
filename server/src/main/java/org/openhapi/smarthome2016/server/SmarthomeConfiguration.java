@@ -57,18 +57,5 @@ public class SmarthomeConfiguration extends Configuration {
         return swagger;
     }
 
-//
-//    @JsonProperty("viewRendererConfiguration")
-//    public Map<String, Map<String, String>> getViewRendererConfiguration() {
-//        return viewRendererConfiguration;
-//    }
-//
-//    @JsonProperty("viewRendererConfiguration")
-//    public void setViewRendererConfiguration(Map<String, Map<String, String>> viewRendererConfiguration) {
-//        final ImmutableMap.Builder<String, Map<String, String>> builder = ImmutableMap.builder();
-//        for (Map.Entry<String, Map<String, String>> entry : viewRendererConfiguration.entrySet()) {
-//            builder.put(entry.getKey(), ImmutableMap.copyOf(entry.getValue()));
-//        }
-//        this.viewRendererConfiguration = builder.build();
-//    }
+
 }

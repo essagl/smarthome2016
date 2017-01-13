@@ -1,6 +1,10 @@
 package org.openhapi.smarthome2016.server.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.openhapi.smarthome2016.server.core.User;
 import org.openhapi.smarthome2016.server.db.UserDAO;
 
@@ -9,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+@Api("/user")
 @Path("/user")
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
@@ -22,6 +27,11 @@ public class UserResource {
     @POST
     @UnitOfWork
     @RolesAllowed("ADMIN")
+    @ApiOperation(value = "Create a user", notes = "Creating a user with roles USER / ADMIN")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "User creates", response = User.class),
+            @ApiResponse(code = 401, message = "Not allowed - The auth header must contain admin credentials"),
+            @ApiResponse(code = 500, message = "Internal error") })
     public User createUser(User user) {
         return userDAO.createOrUpdate(user);
     }

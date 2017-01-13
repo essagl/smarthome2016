@@ -18,7 +18,7 @@ import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicLong;
 
-@Api("/")
+@Api("/board")
 @Path("/board")
 @Produces(MediaType.APPLICATION_JSON)
 public class SmarthomeBoardResource {
@@ -34,8 +34,8 @@ public class SmarthomeBoardResource {
 
     @GET
     @Timed(name = "get-requests")
-    @ApiOperation(value = "MessuredValues", notes = "Returns indoor,outdoor temperature in " +
-            "degree celcius and humidity in percent.")
+    @ApiOperation(value = "Get the sensor values", notes = "Returns indoor,outdoor temperature in " +
+            "degree celsius and humidity in percent.", response = MessuredValues.class)
     @ApiResponses(value = { @ApiResponse(code = 200, message = "MessuredValues") })
     public MessuredValues receiveAllData() throws IOException {
         MessuredValues messuredValues = new MessuredValues(counter.incrementAndGet(),
@@ -49,8 +49,10 @@ public class SmarthomeBoardResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/thermometer")
-    @ApiOperation(value = "Thermometer", notes = "starting thermometer program")
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "-Thermometer started- or -Error while starting thermometer-") })
+    @ApiOperation(value = "Thermometer", notes = "Starting the thermometer program", response = String.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "-Thermometer started- or -Error while starting thermometer-"),
+            @ApiResponse(code = 500, message = "GPIO interface not present or board error")})
     public String startThermometer() {
         try {
             Thermometer.displayTemperature();
@@ -65,8 +67,10 @@ public class SmarthomeBoardResource {
 
     @GET
     @Produces(MediaType.TEXT_PLAIN)
-    @ApiOperation(value = "Thermometer", notes = "stopping thermometer program")
-    @ApiResponses(value = { @ApiResponse(code = 200, message = "Thermometer stopped") })
+    @ApiOperation(value = "Thermometer", notes = "Stopping the thermometer program")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Thermometer stopped", response = String.class),
+            @ApiResponse(code = 500, message = "GPIO interface not present or board error") })
     @Path("/thermometer/stop")
     public String stopThermometer() {
         Thermometer.stop();
