@@ -1,11 +1,10 @@
 package org.openhapi.smarthome2016.server;
 
 import io.dropwizard.testing.ConfigOverride;
-import io.dropwizard.testing.ResourceHelpers;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.*;
 import org.openhapi.smarthome2016.server.api.MessuredValues;
-import org.openhapi.smarthome2016.server.board.ServiceMockImpl;
+import org.openhpi.smarthome2016.ServiceMockImpl;
 import org.openhapi.smarthome2016.server.core.User;
 import org.openhapi.smarthome2016.server.resources.AbstractResourceTest;
 

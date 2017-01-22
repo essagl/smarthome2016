@@ -5,7 +5,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.db.DataSourceFactory;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.openhapi.smarthome2016.server.board.ServiceInterface;
+import org.openhpi.smarthome2016.ServiceInterface;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

@@ -1,4 +1,4 @@
-boardServiceClass: org.openhapi.smarthome2016.server.board.ServiceMockImpl
+boardServiceClass: org.openhpi.smarthome2016.ServiceMockImpl
 
 database:
   driverClass: org.h2.Driver

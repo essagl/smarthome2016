@@ -1,4 +1,4 @@
-package org.openhpi.smarthome2016;
+package org.openhpi.smarthome2016.examples;
 
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
@@ -87,7 +87,7 @@ public class NonPrivilegedGpioExample {
             // sleep for 1 minute, then shutdown
             Thread.sleep(60000);
 
-            // stop all GPIO activity/threads by shutting down the GPIO controller
+            // shutdown all GPIO activity/threads by shutting down the GPIO controller
             // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
             gpio.shutdown();
 

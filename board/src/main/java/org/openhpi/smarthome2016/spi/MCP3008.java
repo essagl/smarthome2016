@@ -3,6 +3,7 @@ package org.openhpi.smarthome2016.spi;
 import com.pi4j.io.spi.SpiChannel;
 import com.pi4j.io.spi.SpiDevice;
 import com.pi4j.io.spi.SpiFactory;
+import org.openhpi.smarthome2016.examples.DisplayTemperature;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -14,7 +15,7 @@ import java.util.Properties;
  * Data access methods for Lm335Z temperature sensor, HMZ-333A1 Humidity module and MCP3008 ADC Module
  * installed on the embedded smarthome board used with the openHPI course 2016.<br>
  * Additionally the reference voltage multiplicand can be set to support some kind of calibration.
- * @see org.openhpi.smarthome2016.DisplayTemperature
+ * @see DisplayTemperature
  *
  */
 public class MCP3008 {

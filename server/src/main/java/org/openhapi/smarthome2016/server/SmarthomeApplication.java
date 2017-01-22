@@ -41,6 +41,7 @@ public class SmarthomeApplication extends Application<SmarthomeConfiguration> {
 
     public static void main(String[] args) throws Exception {
         new SmarthomeApplication().run(args);
+        // start Bord initializing and action thread
     }
 
 

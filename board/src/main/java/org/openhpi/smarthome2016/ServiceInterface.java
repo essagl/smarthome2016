@@ -1,7 +1,8 @@
-package org.openhapi.smarthome2016.server.board;
+package org.openhpi.smarthome2016;
 
 import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
+import org.openhpi.smarthome2016.gpio.PinStateListener;
 
 import java.io.IOException;
 
@@ -9,6 +10,12 @@ import java.io.IOException;
  * Created by essagl on 02.01.2017.
  */
 public interface ServiceInterface {
+
+    void setupGPIO();
+
+    void shutdownGPIO();
+
+    void addListener(PinStateListener pinStateListener);
 
     double getIndoorTemp() throws IOException;
 
@@ -19,28 +26,32 @@ public interface ServiceInterface {
     /**
      * Onboard button 1
      */
-    GpioPinDigitalInput getButton1();
+    boolean isButton1Pressed();
 
     /**
      * Onboard button 2
      */
-    GpioPinDigitalInput getButton2();
+    boolean isButton2Pressed();
 
     /**
     * Door sensor
     */
-    GpioPinDigitalInput getSwitch1();
+
+    boolean isSwitch1Open();
+
 
     /**
      * red LED
      */
-    GpioPinDigitalOutput getRedLed();
-
+    void setRedLedOn();
+    void setRedLedOFF();
+    boolean isRedLedOn();
     /**
      * green LED
      */
-    GpioPinDigitalOutput getGreenLed();
-
+    void setGreenLedOn();
+    void setGreenLedOff();
+    boolean isGreenLedOn();
     /**
      * adjust the reference voltage for calibration
      * @param referenceVoltage
@@ -62,4 +73,6 @@ public interface ServiceInterface {
     void setLcdBackLightOFF();
 
     void setLcdBackLightON();
+
+    void clearDisplay();
 }

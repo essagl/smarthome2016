@@ -7,7 +7,7 @@ import org.hibernate.validator.constraints.Length;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class MessuredValues {
-    private long id;
+
 
     @Length(max = 5)
     private double indoorTemp;
@@ -24,17 +24,14 @@ public class MessuredValues {
 
 
     public MessuredValues(long counter, double indoorTemp, double outdoorTemp, double humidity) {
-        this.id = id;
+
         this.indoorTemp = indoorTemp;
         this.outdoorTemp = outdoorTemp;
         this.humidity = humidity;
     }
 
 
-    @JsonProperty
-    public long getId() {
-        return id;
-    }
+
 
     @JsonProperty
     public double getIndoorTemp() {
@@ -55,7 +52,6 @@ public class MessuredValues {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("id", id)
                 .add("indoorTemp", indoorTemp)
                 .add("outdoorTemp", outdoorTemp)
                 .add("humidity", humidity)

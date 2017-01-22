@@ -1,4 +1,4 @@
-package org.openhpi.smarthome2016;
+package org.openhpi.smarthome2016.examples;
 
 import com.pi4j.io.gpio.*;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
@@ -13,7 +13,7 @@ public class LedAndButtons {
     private LedAndButtons(){}
 
     /**
-     * Start without parameters to make the LED's blink. The red led blinks for 15 sec,  the green LED does not stop
+     * Start without parameters to make the LED's blink. The red led blinks for 15 sec,  the green LED does not shutdown
      * blinking. Pressing the button1, change LED blinking of the green LED, pressing button2 restarts blinking the
      * red LED.
      * @param args
@@ -85,7 +85,7 @@ public class LedAndButtons {
             Thread.sleep(500);
         }
 
-        // stop all GPIO activity/threads
+        // shutdown all GPIO activity/threads
         // (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
         // gpio.shutdown();   <--- implement this method call if you wish to terminate the Pi4J GPIO controller
     }

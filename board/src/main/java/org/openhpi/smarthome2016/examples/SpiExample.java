@@ -1,4 +1,4 @@
-package org.openhpi.smarthome2016;
+package org.openhpi.smarthome2016.examples;
 
 /**
  * Display temperature and humidity values on the console.
