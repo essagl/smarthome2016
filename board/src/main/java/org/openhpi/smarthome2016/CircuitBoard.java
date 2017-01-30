@@ -84,8 +84,6 @@ public class CircuitBoard {
                 double outdoorTemp =  boardService.getOutdoorTemp();
                 double humidity = boardService.getHumidity();
                 if (indoorTemp < 16) {
-                    boardService.setGreenLedOff();
-                    boardService.setRedLedOn();
                     roomClimate = "Raum zu kalt";
                     roomClimateOK = false;
                 } else if(indoorTemp > 28) {
@@ -94,23 +92,24 @@ public class CircuitBoard {
                     roomClimate = "Raum zu warm";
                     roomClimateOK = false;
                 } else if(outdoorTemp < 16 && indoorTemp < 16 && boardService.isSwitch1Open()) {
-                    boardService.setGreenLedOff();
-                    boardService.setRedLedOn();
-                    roomClimate = "Fenster zumachen";
+                     roomClimate = "Fenster zumachen";
                     roomClimateOK = false;
                 } else if (isRelHumidityOk(outdoorTemp,indoorTemp,humidity)){
-                    boardService.setGreenLedOn();
-                    boardService.setRedLedOFF();
                     roomClimate = "Raumklima OK";
                     roomClimateOK = true;
-
                 } else  {
-                    boardService.setGreenLedOff();
-                    boardService.setRedLedOn();
                     roomClimate = "Bitte lueften";
                     roomClimateOK = false;
                 }
                 if (valueChanged) {
+                    if (roomClimateOK){
+                        boardService.setGreenLedOn();
+                        boardService.setRedLedOFF();
+                    } else {
+                        boardService.setGreenLedOff();
+                        boardService.setRedLedOn();
+
+                    }
                     message(roomClimate,LCD_ROW_1,displaying);
                     String row2 = String.format("%1$.1f %2$.1f %3$.1f",lastOutdoorTemp,lastIndoorTemp,lastHumidity );
                     if (row2.length() > 16){
@@ -162,7 +161,7 @@ public class CircuitBoard {
 
         try {
             clearDisplay();
-            setBacklightOff();
+            boardService.setLcdBackLightOFF();
             Thread.sleep(100);
             boardService.setGreenLedOff();
             boardService.setRedLedOFF();

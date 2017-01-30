@@ -1,9 +1,12 @@
 package org.openhapi.smarthome2016.server;
 
+import com.fasterxml.jackson.datatype.joda.JodaMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 import io.dropwizard.testing.ConfigOverride;
 import io.dropwizard.testing.junit.DropwizardAppRule;
 import org.junit.*;
-import org.openhapi.smarthome2016.server.api.MessuredValues;
+import org.openhapi.smarthome2016.server.core.BoardData;
 import org.openhpi.smarthome2016.ServiceMockImpl;
 import org.openhapi.smarthome2016.server.core.User;
 import org.openhapi.smarthome2016.server.resources.AbstractResourceTest;
@@ -41,10 +44,12 @@ public class SmarthomeBoardIntegrationTest {
     @BeforeClass
     public static void migrateDb() throws Exception {
         RULE.getApplication().run("db", "migrate", CONFIG_PATH);
+
     }
 
     @Before
     public void setUp() throws Exception {
+        RULE.getObjectMapper().registerModule(new JodaModule());
         client = ClientBuilder.newClient();
 
     }
@@ -58,9 +63,13 @@ public class SmarthomeBoardIntegrationTest {
     @Test
     public void testGetAllValues() throws Exception {
         ServiceMockImpl serviceMock = new ServiceMockImpl();
-        final MessuredValues messuredValues = client.target("http://localhost:" + RULE.getLocalPort() + "/board")
+        JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider();
+        provider.setMapper(new JodaMapper());
+
+        final BoardData messuredValues = client.target("http://localhost:" + RULE.getLocalPort() + "/board")
+                .register(provider)
                 .request()
-                .get(MessuredValues.class);
+                .get(BoardData.class);
 
         assertThat(messuredValues.getHumidity()).isEqualTo(serviceMock.getHumidity());
     }

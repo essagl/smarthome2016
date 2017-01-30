@@ -44,6 +44,6 @@ public class UserDAO extends AbstractDAO<User> {
 
 
     public List<User> findAll() {
-        return list(namedQuery("org.openhapi.smarthome2016.server.core.User.findAll"));
+        return list(namedQuery("org.openhapi.smarthome2016.server.core.User.findAllNewerThan"));
     }
 }

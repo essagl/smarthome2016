@@ -58,12 +58,12 @@ public class ServiceMockImpl implements ServiceInterface {
 
     @Override
     public void setRedLedOn() {
-
+        System.out.println("red LED ON");
     }
 
     @Override
     public void setRedLedOFF() {
-
+        System.out.println("Red LED OFF");
     }
 
     @Override
@@ -73,12 +73,12 @@ public class ServiceMockImpl implements ServiceInterface {
 
     @Override
     public void setGreenLedOn() {
-
+        System.out.println("Green LED ON");
     }
 
     @Override
     public void setGreenLedOff() {
-
+        System.out.println("Green LED OFF");
     }
 
     @Override

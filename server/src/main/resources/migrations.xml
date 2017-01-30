@@ -23,5 +23,29 @@
             <column name="password" value="secret"/>
             <column name="roles" value="USER,ADMIN"/>
         </insert>
+
+        <createTable tableName="DATA">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="timestamp" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="outdoorTemp" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="indoorTemp" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="humidity" type="DOUBLE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="switchClosed" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="message" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
     </changeSet>
 </databaseChangeLog>

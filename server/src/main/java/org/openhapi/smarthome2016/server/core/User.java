@@ -14,7 +14,7 @@ import java.security.Principal;
 @NamedQueries(
         {
                 @NamedQuery(
-                        name = "org.openhapi.smarthome2016.server.core.User.findAll",
+                        name = "org.openhapi.smarthome2016.server.core.User.findAllNewerThan",
                         query = "SELECT u FROM User u"
                 ),
 
