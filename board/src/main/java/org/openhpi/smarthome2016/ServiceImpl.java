@@ -75,7 +75,7 @@ public class ServiceImpl implements ServiceInterface {
 
     @Override
     public boolean isSwitch1Open() {
-        return GPIO.getSwitch1().isLow();
+        return GPIO.getSwitch1().isHigh();
     }
 
     @Override
