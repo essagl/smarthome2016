@@ -103,10 +103,8 @@ public class SaveBoardDataJob extends AbstractScheduledService implements Manage
     }
 
     @Override
+    @UnitOfWork
     public void handlePinStateChangedEvent(PinStateChangedEvent event) {
-        if(event.getState().getName().equals(GPIO.getSwitch1Name())){
             runJob();
-        }
-
-    }
+     }
 }
