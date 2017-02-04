@@ -32,7 +32,7 @@ public class BoardData  {
     @ApiModelProperty(position = 2,  value = "Date time info")
     @Column(name = "timestamp", nullable = false)
     @JsonFormat
-            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+            (shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
     private DateTime timestamp;
 
 

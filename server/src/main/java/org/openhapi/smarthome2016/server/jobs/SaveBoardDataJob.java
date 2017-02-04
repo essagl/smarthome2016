@@ -7,6 +7,9 @@ import org.joda.time.DateTime;
 import org.openhapi.smarthome2016.server.core.BoardData;
 import org.openhapi.smarthome2016.server.db.BoardDataDAO;
 import org.openhpi.smarthome2016.CircuitBoard;
+import org.openhpi.smarthome2016.gpio.GPIO;
+import org.openhpi.smarthome2016.gpio.PinStateChangedEvent;
+import org.openhpi.smarthome2016.gpio.PinStateListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,9 +17,11 @@ import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by ulrich on 27.01.17.
+ * Created by essagl on 27.01.17.
+ * Starts a background job, that stores the board data every hour in the database,
+ * or if switch1 changed it's state
  */
-public class SaveBoardDataJob extends AbstractScheduledService implements Managed {
+public class SaveBoardDataJob extends AbstractScheduledService implements Managed, PinStateListener {
     private final Logger LOGGER = LoggerFactory.getLogger(SaveBoardDataJob.class);
     private Scheduler periodicTask =  AbstractScheduledService.Scheduler.newFixedRateSchedule(1, 60, TimeUnit.MINUTES);
     CircuitBoard board;
@@ -25,6 +30,8 @@ public class SaveBoardDataJob extends AbstractScheduledService implements Manage
     public SaveBoardDataJob(CircuitBoard board, BoardDataDAO boardDataDAO) {
         this.board = board;
         this.boardDataDAO = boardDataDAO;
+        this.board.getBoardService().addListener(this);
+
     }
 
 
@@ -93,5 +100,13 @@ public class SaveBoardDataJob extends AbstractScheduledService implements Manage
         } else {
             LOGGER.error("not initialized!");
         }
+    }
+
+    @Override
+    public void handlePinStateChangedEvent(PinStateChangedEvent event) {
+        if(event.getState().getName().equals(GPIO.getSwitch1Name())){
+            runJob();
+        }
+
     }
 }

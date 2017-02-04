@@ -23,7 +23,7 @@ public class ServiceMockImpl implements ServiceInterface {
 
     @Override
     public void addListener(PinStateListener pinStateListener) {
-
+        System.out.println("Listener was added "+pinStateListener.toString());
     }
 
     @Override
