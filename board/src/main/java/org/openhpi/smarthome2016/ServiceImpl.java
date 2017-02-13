@@ -35,7 +35,7 @@ public class ServiceImpl implements ServiceInterface {
     }
 
     @Override
-    public void setupGPIO() {
+    public void setupBoard() {
         GpioUtil.enableNonPrivilegedAccess();
         // create gpio controller
         gpio = GpioFactory.getInstance();
@@ -43,7 +43,7 @@ public class ServiceImpl implements ServiceInterface {
     }
 
     @Override
-    public void shutdownGPIO() {
+    public void shutdownBoard() {
         gpio.removeAllListeners();
         gpio.unprovisionPin(GPIO.getButton1(),GPIO.getButton2(),GPIO.getSwitch1());
         gpio.shutdown();

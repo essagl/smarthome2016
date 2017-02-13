@@ -12,12 +12,12 @@ import java.io.IOException;
  */
 public class ServiceMockImpl implements ServiceInterface {
     @Override
-    public void setupGPIO() {
+    public void setupBoard() {
         System.out.println("GPIO setup");
     }
 
     @Override
-    public void shutdownGPIO() {
+    public void shutdownBoard() {
         System.out.println("GPIO shutdown");
     }
 
@@ -28,17 +28,17 @@ public class ServiceMockImpl implements ServiceInterface {
 
     @Override
     public double getIndoorTemp() throws IOException {
-        return 20.90;
+        return 20.8998534;
     }
 
     @Override
     public double getOutdoorTemp() throws IOException {
-        return 2.25;
+        return 2.24654346078;
     }
 
     @Override
     public double getHumidity() throws IOException {
-        return 45.50;
+        return 45.501234231;
     }
 
     @Override

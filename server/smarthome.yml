@@ -1,5 +1,5 @@
 # service to interact with the smarthome board
-boardServiceClass: org.openhpi.smarthome2016.ServiceImpl
+boardServiceClass: org.openhpi.smarthome2016.ServiceMockImpl
 
 # Database settings.
 database:
@@ -28,9 +28,9 @@ server:
 #  hardNofileLimit: 1000
   applicationConnectors:
     - type: http
-      port: 8080
+      port: 9080
     - type: https
-      port: 8443
+      port: 9443
       keyStorePath: example.keystore
       keyStorePassword: example
       validateCerts: false
@@ -39,9 +39,9 @@ server:
 
   adminConnectors:
     - type: http
-      port: 8081
+      port: 9081
     - type: https
-      port: 8444
+      port: 9444
       keyStorePath: example.keystore
       keyStorePassword: example
       validateCerts: false

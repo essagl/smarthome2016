@@ -8,13 +8,24 @@ import java.io.IOException;
 
 /**
  * Created by essagl on 02.01.2017.
+ * The Service Interface to interact with the board hardware
  */
 public interface ServiceInterface {
 
-    void setupGPIO();
+    /**
+     * initialise the hardware
+     */
+    void setupBoard();
 
-    void shutdownGPIO();
+    /**
+     * shutdown the hardware
+     */
+    void shutdownBoard();
 
+    /**
+     * A Pin State listener gets informed when buttons are pressed or switch changes state.
+     * @param pinStateListener
+     */
     void addListener(PinStateListener pinStateListener);
 
     double getIndoorTemp() throws IOException;

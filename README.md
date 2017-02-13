@@ -9,11 +9,15 @@ This project shows how to access the hardware using Java and how to control the 
 The Board is controlled using the <a href="http://pi4j.com/">PI4J</a> API. The server is based on the
 <a href="http://www.dropwizard.io/1.0.5/docs/">dropwizard</a> framework. The implementation includes a
 <a href="http://swagger.io/">swagger</a> based generated client to access the server functionality.
-You need the Board used during the course connected to an Raspberry PI, like shown in the course videos.
-Easiest way to get all running is to check out the sources, build and run directly on your Raspberry PI.
-Java 8 and maven is needed to build all sources.
+You will have most fun with the Board used during the course connected to an Raspberry PI, like shown in the course videos,
+but it is not required. If you are interested in the server component, which is indeed the focus of this project, a mock
+implementation of the board interface is included. See also
+<a href="https://github.com/essagl/smarthome2016/wiki/Configuration-described">the wiki page</a>.
 
 Installation:
+
+Build from source:
+Java 8 and maven is required to build all sources.
 Assumed <a href="https://maven.apache.org/">maven</a> is installed call "mvn clean install" in the root directory
 of the project to build the project and  "mvn site" to generate the documentation for each module.
 You can build a complete local documentation site with "mvn site:stage".

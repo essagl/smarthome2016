@@ -77,9 +77,9 @@ public class SaveBoardDataJob extends AbstractScheduledService implements Manage
         if (null != boardDataDAO && null != board) {
 
             try {
-                double outDoorTemp = board.getBoardService().getOutdoorTemp();
-                double inDoorTemp = board.getBoardService().getIndoorTemp();
-                double humidity = board.getBoardService().getHumidity();
+                double outDoorTemp = board.getAverageOutdoorTemp();
+                double inDoorTemp = board.getAverageIndoorTemp();
+                double humidity = board.getAverageHumidity();
                 boolean switchOpen = board.getBoardService().isSwitch1Open();
                 String message = board.getRoomClimateInfo();
                 DateTime datetime = DateTime.now();

@@ -9,7 +9,7 @@ import com.pi4j.wiringpi.GpioUtil;
 public class GPIO {
 
     final static GpioController gpio;
-    final static GpioPinDigitalOutput ledRED;
+    final static GpioPinDigitalOutput ledRED ;
     final static GpioPinDigitalOutput ledGREEN;
     final static GpioPinDigitalInput button1;
     final static GpioPinDigitalInput button2;
@@ -24,8 +24,8 @@ public class GPIO {
         gpio = GpioFactory.getInstance();
 
         // provision gpio pin #01 & #03 as an output pins and blink
-        ledRED = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_07);
         ledGREEN = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_03);
+        ledRED = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_07);
 
         // provision gpio pin #02 as an input pin with its internal pull down resistor enabled
 
