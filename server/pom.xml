@@ -8,7 +8,7 @@
     <description>A java port for the OpenHPI 2016 embedded Smarthome course.</description>
     <groupId>org.openhpi.smarthome2016</groupId>
     <artifactId>server</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <url>${smarthome2016.url}</url>
     <name>Smarthome2016 Server Application</name>
     <parent>

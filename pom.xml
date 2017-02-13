@@ -7,7 +7,7 @@
 
     <groupId>org.openhpi.smarthome2016</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
 
     <name>Smarthome2016</name>
